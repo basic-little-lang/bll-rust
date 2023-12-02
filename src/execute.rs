@@ -57,7 +57,7 @@ pub fn execute(tokens: &Vec<parser::ParsedTokens>) -> Result<(), String> {
                             }
                         }
                     },
-                    _ => return Err(format!("{}: Last token is not an var or an number", "syntax error".red())),
+                    _ => return Err(format!("{}: Next token is not an var or an number", "syntax error".red())),
                 }
 
                 last_val = last_v + next_v;
@@ -105,7 +105,7 @@ pub fn execute(tokens: &Vec<parser::ParsedTokens>) -> Result<(), String> {
                             }
                         }
                     },
-                    _ => return Err(format!("{}: Last token is not an var or an number", "syntax error".red())),
+                    _ => return Err(format!("{}: Next token is not an var or an number", "syntax error".red())),
                 }
 
                 last_val = last_v - next_v;
@@ -153,7 +153,7 @@ pub fn execute(tokens: &Vec<parser::ParsedTokens>) -> Result<(), String> {
                             }
                         }
                     },
-                    _ => return Err(format!("{}: Last token is not an var or an number", "syntax error".red())),
+                    _ => return Err(format!("{}: Next token is not an var or an number", "syntax error".red())),
                 }
 
                 last_val = last_v * next_v;
@@ -201,7 +201,7 @@ pub fn execute(tokens: &Vec<parser::ParsedTokens>) -> Result<(), String> {
                             }
                         }
                     },
-                    _ => return Err(format!("{}: Last token is not an var or an number", "syntax error".red())),
+                    _ => return Err(format!("{}: Next token is not an var or an number", "syntax error".red())),
                 }
 
                 last_val = last_v / next_v;
@@ -249,7 +249,7 @@ pub fn execute(tokens: &Vec<parser::ParsedTokens>) -> Result<(), String> {
                             }
                         }
                     },
-                    _ => return Err(format!("{}: Last token is not an var or an number", "syntax error".red())),
+                    _ => return Err(format!("{}: Next token is not an var or an number", "syntax error".red())),
                 }
 
                 last_val = last_v % next_v;
@@ -297,10 +297,35 @@ pub fn execute(tokens: &Vec<parser::ParsedTokens>) -> Result<(), String> {
                             }
                         }
                     },
-                    _ => return Err(format!("{}: Last token is not an var or an number", "syntax error".red())),
+                    _ => return Err(format!("{}: Next token is not an var or an number", "syntax error".red())),
                 }
 
                 last_val = last_v.powf(*next_v);
+
+            },
+            ParsedTokens::Equal => {
+                if let None = last_token {
+                    return Err("Cannot get last token".to_string());
+                }
+        
+                if let None = next_token {
+                    return Err("Cannot get next token".to_string());
+                }
+
+                let last = last_token.unwrap();
+                let next = next_token.unwrap();
+
+                match next {
+                    ParsedTokens::Var(var) => {
+                        vars.insert(var.clone(), last_val);
+                    },
+                    ParsedTokens::Number(n) => {
+                        if let ParsedTokens::Var(var) = last {
+                            vars.insert(var.clone(), n.clone());
+                        }
+                    },
+                    _ => return Err(format!("{}: Next token is not an var or an number", "syntax error".red())),
+                }
 
             },
             _ => {},
