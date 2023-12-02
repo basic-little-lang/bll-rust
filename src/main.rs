@@ -1,5 +1,5 @@
 use std::{env, process, fs};
-use bll_rust::{args::Args, parser::tokens::tokenize_str};
+use bll_rust::{args::Args, parser::{tokens::tokenize_str, self}};
 use colored::Colorize;
 
 fn main() {
@@ -23,6 +23,14 @@ fn main() {
     };
 
     let tokens = match tokenize_str(&contents) {
+        Ok(n) => n,
+        Err(err) => {
+            eprintln!("{}: {}", "error".bold().red(), err);
+            process::exit(1);
+        }
+    };
+
+    let tokens = match parser::ParsedTokens::convert(&tokens) {
         Ok(n) => n,
         Err(err) => {
             eprintln!("{}: {}", "error".bold().red(), err);
