@@ -11,6 +11,7 @@ pub enum Token {
     Negitive,
     Equal,
     Char(char),
+    Point,
     Whitespace,
 }
 
@@ -64,6 +65,7 @@ pub fn tokenize_str(str: &str) -> Result<Vec<Token>, String> {
             '%' => tokens.push(Token::Modulo),
             '^' => tokens.push(Token::Power),
             '=' => tokens.push(Token::Equal),
+            '.' => tokens.push(Token::Point),
             _ => tokens.push(Token::Char(ch)),
         }
     }
