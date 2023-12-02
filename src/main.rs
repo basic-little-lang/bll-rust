@@ -1,5 +1,5 @@
 use std::{env, process, fs};
-use bll_rust::{args::Args, parser::{tokens::tokenize_str, ParsedTokens}};
+use bll_rust::{args::Args, parser::{tokens::tokenize_str, ParsedTokens}, execute::execute};
 use colored::Colorize;
 
 fn main() {
@@ -38,6 +38,6 @@ fn main() {
         }
     };
 
-    println!("{:?}", tokens);
+    execute(&tokens);
 
 }
