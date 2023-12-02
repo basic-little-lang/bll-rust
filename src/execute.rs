@@ -328,6 +328,28 @@ pub fn execute(tokens: &Vec<parser::ParsedTokens>) -> Result<(), String> {
                 }
 
             },
+            ParsedTokens::Print => {
+                if let None = next_token {
+                    return Err("Cannot get next token".to_string());
+                }
+
+                let next = next_token.unwrap();
+
+                match next {
+                    ParsedTokens::Var(var) => {
+                        match vars.get(var) {
+                            Some(val) => {
+                                println!("{} = {}", var, val);
+                            },
+                            None => {
+                                return Err(format!("{}: The varible {} does not have a value", "syntax error".red(), var));
+                            }
+                        }
+                    },
+                    _ => return Err(format!("{}: Next token is not an var", "syntax error".red())),
+
+                }
+            },
             _ => {},
         }
     }
