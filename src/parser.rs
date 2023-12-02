@@ -19,6 +19,13 @@ pub enum ParsedTokens {
     Var(String),
 }
 
+fn str_to_keyword(str: &str) -> Option<ParsedTokens> {
+    match str {
+        "print" => Some(ParsedTokens::Print),
+        _ => None,
+    }
+}
+
 impl ParsedTokens {
     pub fn convert(dirent_tokens: &Vec<Token>) -> Result<Vec<ParsedTokens>, String> {
         let mut parsered_tokens = Vec::new();
