@@ -38,6 +38,12 @@ fn main() {
         }
     };
 
-    execute(&tokens);
+    match execute(&tokens) {
+        Err(err) => {
+            eprintln!("{}: {}", "error".bold().red(), err);
+            process::exit(1);
+        },
+        Ok(_) => {},
+    }
 
 }
