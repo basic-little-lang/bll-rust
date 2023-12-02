@@ -73,6 +73,13 @@ impl ParsedTokens {
                         parsered_tokens.push(ParsedTokens::Number(number));
 
                         buffer = Vec::new();
+                    } else if next_is_whitespace {
+                        match str_to_keyword(&string) {
+                            Some(token) => parsered_tokens.push(token),
+                            None => parsered_tokens.push(ParsedTokens::Var(string)),
+                        }
+
+                        buffer = Vec::new();
                     }
 
                 },
