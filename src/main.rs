@@ -1,4 +1,4 @@
-use std::{env, process};
+use std::{env, process, fs};
 use bll_rust::args::Args;
 use colored::Colorize;
 
@@ -13,5 +13,13 @@ fn main() {
             process::exit(1);
         }
     };
-    println!("File name: {}", args.file_name());
+    
+    let contents = match fs::read_to_string(args.file_name()) {
+        Ok(str) => str,
+        Err(err) => {
+            eprintln!("{}: {}", "error".bold().red(), err.to_string());
+            process::exit(1);
+        }
+    };
+
 }
