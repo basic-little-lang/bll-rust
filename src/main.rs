@@ -1,5 +1,5 @@
 use std::{env, process, fs};
-use bll_rust::{args::Args, parser::{tokens::tokenize_str, self}};
+use bll_rust::{args::Args, parser::{tokens::tokenize_str, ParsedTokens}};
 use colored::Colorize;
 
 fn main() {
@@ -30,7 +30,7 @@ fn main() {
         }
     };
 
-    let tokens = match parser::ParsedTokens::convert(&tokens) {
+    let tokens = match ParsedTokens::convert(&tokens) {
         Ok(n) => n,
         Err(err) => {
             eprintln!("{}: {}", "error".bold().red(), err);
