@@ -16,12 +16,14 @@ pub enum ParsedTokens {
     Equal,
     Number(f64),
     Print,
+    Copy,
     Var(String),
 }
 
 fn str_to_keyword(str: &str) -> Option<ParsedTokens> {
     match str {
         "print" => Some(ParsedTokens::Print),
+        "copy" => Some(ParsedTokens::Copy),
         _ => None,
     }
 }

@@ -350,6 +350,43 @@ pub fn execute(tokens: &Vec<parser::ParsedTokens>) -> Result<(), String> {
 
                 }
             },
+            ParsedTokens::Copy => {
+                if let None = next_token {
+                    return Err("Cannot get next token".to_string());
+                }
+
+                let next = next_token.unwrap();
+
+                let next_two_token = tokens.get(if index == tokens.len() - 2 { tokens.len() - 1} else { index } + 2);
+
+                if let None = next_two_token {
+                    return Err("Cannot get next token".to_string());
+                }
+
+                let next_two = next_two_token.unwrap();
+
+                match next {
+                    ParsedTokens::Var(from) => {
+                        match next_two {
+                            ParsedTokens::Var(to) => {
+                                vars.insert(to.clone(), match vars.get(from) {
+                                    Some(var) => var,
+                                    None => {
+                                        return Err(format!("{}: The varible {} does not have a value", "syntax error".red(), to));
+                                    },
+                                }.clone());
+                            },
+                            _ => {
+                                return Err("Next token is not a varible".to_string());
+                            },
+                        }
+                    },
+                    _ => {
+                        return Err("Next token is not a varible".to_string());
+                    },
+                }
+
+            },
             _ => {},
         }
     }
