@@ -66,7 +66,12 @@ pub fn tokenize_str(str: &str) -> Result<Vec<Token>, String> {
             '^' => tokens.push(Token::Power),
             '=' => tokens.push(Token::Equal),
             '.' => tokens.push(Token::Point),
-            _ => tokens.push(Token::Char(ch)),
+            _ => {
+                if !ch.is_digit(10) && !ch.is_alphanumeric() {
+                    continue;
+                }
+                tokens.push(Token::Char(ch));
+            },
         }
     }
 
